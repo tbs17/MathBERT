@@ -9,7 +9,17 @@ MathBERT has its own vocabulary (scivocab) that's built to best match the traini
 It results in state-of-the-art performance on a wide range of scientific domain nlp tasks. The details of the evaluation are in the paper. Evaluation code and data are included in this repo. -->
 
 #### Downloading Trained Models
-Update! MathBERT models now installable directly within Huggingface's framework under the namespace tbs17:
+We release the tensorflow and the pytorch version of the trained models. The tensorflow version is compatible with code that works with the model from [Google Research](https://github.com/google-research/bert). The pytorch version is created using the [Hugging Face library](https://github.com/huggingface/transformers), and this repo shows how to use it. 
++ Tensorflow download
+  + note to change the model name to ```mathbert-mathvocab-uncased``` for the mathvocab version
+  ```
+  wget http://tracy-nlp-models.s3.amazonaws.com/mathbert-basevocab-uncased/bert_config.json
+  wget http://tracy-nlp-models.s3.amazonaws.com/mathbert-basevocab-uncased/vocab.txt
+  wget http://tracy-nlp-models.s3.amazonaws.com/mathbert-basevocab-uncased/bert_model.ckpt.index
+  wget http://tracy-nlp-models.s3.amazonaws.com/mathbert-basevocab-uncased/bert_model.ckpt.meta
+  wget http://tracy-nlp-models.s3.amazonaws.com/mathbert-basevocab-uncased/bert_model.ckpt.data-00000-of-00001
++ Pytorch download
+  + MathBERT models now can be installable directly within Huggingface's framework under the namespace tbs17:
 ```
 from transformers import *
 
@@ -19,4 +29,6 @@ model = AutoModel.from_pretrained('tbs17/MathBERT')
 tokenizer = AutoTokenizer.from_pretrained('tbs17/MathBERT-custom')
 model = AutoModel.from_pretrained('tbs17/MathBERT-custom')
 ```
-We release the tensorflow and the pytorch version of the trained models. The tensorflow version is compatible with code that works with the model from [Google Research](https://github.com/google-research/bert). The pytorch version is created using the [Hugging Face library](https://github.com/huggingface/transformers), and this repo shows how to use it. All combinations of mathvocab and basevocab uncased models are available below. Our evaluation shows that mathvocab-uncased usually gives the best results.
+
+
+
