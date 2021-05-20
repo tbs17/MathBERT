@@ -10,12 +10,12 @@
 + College to graduate level MOOC math course syllabus from classcentral.com
 + math paper abstracts from arxiv.org
 
-MathBERT has its own vocabulary (scivocab) that's built to best match the training corpus. We trained cased and uncased versions. We also include models trained on the original BERT vocabulary (basevocab) for comparison.
+MathBERT has its own vocabulary (mathvocab) that's built via ```BertTokenizer``` to best match the training corpus. We also trained MathBERT with the original BERT vocabulary (basevocab) for comparison. Both models are uncased versions.
 
-It results in state-of-the-art performance on a wide range of scientific domain nlp tasks. The details of the evaluation are in the paper. Evaluation code and data are included in this repo.
+<!-- It results in state-of-the-art performance on a wide range of scientific domain nlp tasks. The details of the evaluation are in the paper. Evaluation code and data are included in this repo. -->
 
 #### Downloading Trained Models
-We release the tensorflow and the pytorch version of the trained models. The tensorflow version is compatible with code that works with the model from [Google Research](https://github.com/google-research/bert). The pytorch version is created using the [Hugging Face library](https://github.com/huggingface/transformers), and this repo shows how to use it. 
+We release the tensorflow and the pytorch version of the trained models. The tensorflow version is compatible with code that works with the model from [Google Research](https://github.com/google-research/bert). The pytorch version is created using the [Hugging Face library](https://github.com/huggingface/transformers).
 + Tensorflow download
   + note: to download mathbert-mathvocab version, change the model name to ```mathbert-mathvocab-uncased``` in the below code
   ```
