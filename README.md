@@ -10,7 +10,7 @@
 + College to graduate level MOOC math course syllabus from classcentral.com
 + math paper abstracts from arxiv.org
 
-MathBERT has its own vocabulary (mathvocab) that's built via ```BertTokenizer``` to best match the training corpus. We also trained MathBERT with the original BERT vocabulary (basevocab) for comparison. Both models are uncased versions.
+MathBERT has its own vocabulary (```mathVocab```) that's built via ```BertTokenizer``` to best match the training corpus. We also trained MathBERT with the original BERT vocabulary (```baseVocab```) for comparison. Both models are uncased versions.
 
 <!-- It results in state-of-the-art performance on a wide range of scientific domain nlp tasks. The details of the evaluation are in the paper. Evaluation code and data are included in this repo. -->
 
