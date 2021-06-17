@@ -36,5 +36,9 @@ tokenizer = AutoTokenizer.from_pretrained('tbs17/MathBERT-custom')
 model = AutoModel.from_pretrained('tbs17/MathBERT-custom')
 ```
 
+#### Pretraining and fine-tuning
+
+The pretraining code is located at /mathbert/ and fine-tuning notebook is at /scripts/MathBERT_finetune.ipynb. Unfortunately, we can't release the fine-tuning data set per the data owner's request. All the packages we use is in the requirements.txt file. 
+
 
 
