@@ -25,7 +25,7 @@ We release the tensorflow and the pytorch version of the trained models. The ten
   wget http://tracy-nlp-models.s3.amazonaws.com/mathbert-basevocab-uncased/bert_model.ckpt.meta
   wget http://tracy-nlp-models.s3.amazonaws.com/mathbert-basevocab-uncased/bert_model.ckpt.data-00000-of-00001
 + Pytorch download
-  + MathBERT models now can be installable directly within Huggingface's framework under the namespace tbs17:
+  + MathBERT models now can be installable directly within Huggingface's framework under the name space tbs17 at https://huggingface.co/tbs17/MathBERT or https://huggingface.co/tbs17/MathBERT-custom.
 ```
 from transformers import *
 
