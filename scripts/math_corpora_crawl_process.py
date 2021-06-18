@@ -240,3 +240,97 @@ def pdfparser_multi(data_dir,out_path):
 data_dir='../FREE_MATH_BOOK/non_pdf/Basic_Concepts_of_Mathematics'
 out_path='../FREE_MATH_BOOK_CVT/Basic_Concepts_of_Mathematics.txt'
 data,token=pdfparser_multi(data_dir,out_path)
+
+
+# -----cut on tokens for more efficient training---
+
+# the output data will have 2 blank lines
+def cut_on_tokens(data_path,out_dir,token_len):
+    out_path=os.path.join(out_dir,data_path.split('/')[-1].split('.')[0]+'_2nl_{}_wD.txt'.format(token_len))
+    
+    b=open(data_path,'r',encoding='utf-8')
+    pb=open(out_path,'w',encoding='utf-8')
+    eff_line=''
+    token_dict={}
+
+    try:
+        for i, line in enumerate(b):
+
+            if line!='.' and len(line)>1:
+
+                line=line.rstrip('\n')+' '
+                eff_line+=line
+                token=word_tokenize(eff_line)
+                token_dict[i]=[len(token),eff_line]
+                if token_dict.get(i)[0]>token_len:
+
+                    print(i-1,token_dict[i-1][0])
+                    pb.write(token_dict[i-1][1]+'\n\n')
+                    eff_line=''
+                    line=line.rstrip('\n')+' '
+                    eff_line+=line
+                    token2=word_tokenize(line)
+                    token_dict[i]=[len(token2),eff_line]
+
+        pb.close()
+        b.close()
+    except:
+        pb.close()
+        b.close()
+            
+# to execute the above function to get 256 tokens per sequence
+data_dir='Corpus_data/mathCorpus/individual_txt/'
+out_dir='Corpus_data/mathCorpus/individual_txt/processed1/'
+token_len=256
+for i, f in enumerate(os.listdir(data_dir)):
+    if f.endswith('.txt'):
+        print(i,f)
+        data_path=os.path.join(data_dir,f)
+        cut_on_tokens(data_path,out_dir,token_len)
+
+# ----delete extra lines from original files---
+# per tensorflow pre-training format request, there should be 1 blank line between each sequence, therefore, we delete one line from the above output
+def delete_extra_line_v2(data_path,out_dir):
+    out_path=data_path.split('.')[0]+'_1NL_short.txt'
+    if not os.path.exists(out_dir):os.mkdir(out_dir)
+    out_path=os.path.join(out_dir,out_path.split('/')[-1])
+    b=open(data_path,'r',encoding='utf-8')
+    pb=open(out_path,'w',encoding='utf-8')
+#     no_break_lines=''
+    try:
+        for line in b.readlines()[1:]:
+            line=line.rstrip('\n')
+            lines=re.split('\.|\?', line.strip())
+            GE2_lines=[l.strip() for l in lines if len(l.strip())!=1 and l.strip()!='']
+            for l in GE2_lines:
+                pb.write(l+'\n')
+    except:
+        pb.close()
+        b.close()
+    pb.close()
+    b.close()
+
+# to execute
+    data_dir='K12BERT/Corpus_data/mathCorpus/individual_txt/dedup/dedup_files/'
+for i, f in enumerate(os.listdir(data_dir)):
+    print(i,f)
+    data_path=os.path.join(data_dir,f)
+    out_dir='K12BERT/Corpus_data/mathCorpus/individual_txt/dedup/processed1'
+    if data_path.endswith('.txt'):
+    
+        delete_extra_line_v2(data_path,out_dir)
+
+# ---to convert the pretrained data from csv files to txt format with 1 blank line between---
+# we have data saved in csv format, we convert it to txt file for tensorflow training and insert 1 blank line in between
+def convert_pretrain_csv0(data_path):
+    out_path=data_path.split('.')[0]+'_short.txt'
+    b=open(data_path,'r',encoding='utf-8')
+    pb=open(out_path,'w',encoding='utf-8')
+    for line in b.readlines()[1:]:
+        lines=line.split('.')
+        non_empty_lines=[l for l in lines if l.strip()!=""]
+        if non_empty_lines!=['"']:
+            valid_lines=''
+            for line in non_empty_lines:
+                valid_lines+=line+'\n\n'
+                pb.write(valid_lines)
