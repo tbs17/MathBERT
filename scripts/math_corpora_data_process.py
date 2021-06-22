@@ -21,7 +21,7 @@ import requests
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from string import ascii_lowercase
-# -------crawl for utah math curriculum---------
+# -------auto-download for utah math curriculum---------
 
 def utah_math(url_list,folder_location):
     for url in url_list:
@@ -54,7 +54,7 @@ url_list=["http://utahmiddleschoolmath.org/6th-grade/student-materials.shtml","h
 folder_location = r'../utah_math/'
 utah_math(url_list,folder_location)
 
-# ----crawl for engageNY curriculum---
+# ----auto-download for engageNY curriculum---
 def engage_NY(url, folder_location, keywords):
 
     if not os.path.exists(folder_location):os.mkdir(folder_location)
@@ -95,7 +95,7 @@ keywords=['resource/grade-1-mathematics','resource/grade-2-mathematics','resourc
 engage_NY(url, folder_location, keywords)
 
 
-# ----crawl math books-----
+# ----auto-download math books-----
 def crawl_books(url,folder_location, booknames):
     def remove(value):
         deletechars='\/:*?"<>|'
@@ -178,7 +178,7 @@ jsonContent=fileObject.read()
 booknames=json.loads(jsonContent)
 crawl_books(url,folder_location, booknames)
 
-# ----crawl mooc and arXiv paper abstract-----
+
 
 # ----convert pdf to text-----
 def pdfparser(in_path,out_path):
