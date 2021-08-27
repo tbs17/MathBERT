@@ -85,27 +85,41 @@ def tag_removal_v2(data_path,text_col):
 valid_answer_clean=tag_removal_v2('mathBERT-downstream Tasks/auto_grade/valid_answer_texts.csv','problem_text')
 # below is to split the data into train/dev/test into the ratio of 72:8:20 and output as .tsv files
 # you will also need to convert the original .csv files (before splitting) to .txt files to create pre-training data.
-def split_3data_label(org_path,out_dir):
+def split_3data(org_path,out_dir):
     import pandas as pd
     import os
     from sklearn.model_selection import train_test_split
     title_cc_code=pd.read_csv(org_path,encoding='utf-8',names=['text','label'],header=0)
-    
+    from sklearn.preprocessing import LabelEncoder
+    title_cc_code.head()
+    title_cc_code=title_cc_code.dropna()
+    le=LabelEncoder()
+    title_cc_code['label']=title_cc_code['label'].str.strip()
+    # print('{} unique labels'.format(title_cc_code['label'].nunique()))
+    title_cc_code['text']=title_cc_code['text'].str.strip()
+    title_cc_code['label_en']=le.fit_transform(title_cc_code['label']).astype(str)
+#     title_cc_code0=title_cc_code.drop('label',axis=1)
     print(f'total sample is {title_cc_code.shape[0]}')
     df_train, df_test=train_test_split(title_cc_code,test_size=0.2,random_state=111)
-
-    df_bert_train, df_bert_dev = train_test_split(df_train, test_size=0.1,random_state=111)
+    df_bert = pd.DataFrame({'guid': df_train.index,
+        'label': df_train['label_en'],
+        'alpha': ['a']*df_train.shape[0],
+        'text': df_train['text'].str.replace('\n',' ')})
+    #split into test, dev
+    df_bert_train, df_bert_dev = train_test_split(df_bert, test_size=0.1,random_state=111)
     #create new title_cc_codeframe for test title_cc_code
-
+    df_bert_test = pd.DataFrame({'guid': df_test.index,
+        'text': df_test['text'].str.replace('\n',' ')})
     #output tsv file, no header for train and dev
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
-    df_bert_train.to_csv('{}/train_with_label.csv'.format(out_dir), index=False)
-    df_bert_dev.to_csv('{}/dev_with_label.csv'.format(out_dir),index=False)
-    df_test.to_csv('{}/test_with_label.csv'.format(out_dir), index=False)
+    df_bert_train.to_csv('{}/train.tsv'.format(out_dir), sep='\t', index=False, header=False)
+    df_bert_dev.to_csv('{}/dev.tsv'.format(out_dir), sep='\t', index=False, header=False)
+    df_bert_test.to_csv('{}/test.tsv'.format(out_dir), sep='\t', index=False, header=True)
+    df_test[['label']].to_csv('{}/test_labels.csv'.format(out_dir),index=False)
     print(f'training samples are {df_bert_train.shape[0]}\n'
         f'eval samples are {df_bert_dev.shape[0]}\n'
-        f'testing samples are {df_test.shape[0]}'
+        f'testing samples are {df_bert_test.shape[0]}'
         )
-#     print('{} unique labels'.format(title_cc_code0['label_en'].nunique()))
-    return df_bert_train,df_bert_dev,df_test
+    print('{} unique labels'.format(title_cc_code['label_en'].nunique()))
+    # print(f'WITH NAs, there are total of 55791, W/O NAS, there are {title_cc_code.shape[0]} 234 unique labels')
