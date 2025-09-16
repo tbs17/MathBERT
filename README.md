@@ -41,4 +41,5 @@ model = AutoModel.from_pretrained('tbs17/MathBERT-custom')
 The pretraining code is located at /mathbert/ and fine-tuning notebook is at /scripts/MathBERT_finetune.ipynb. Unfortunately, we can't release the fine-tuning data set per the data owner's request. All the packages we use is in the requirements.txt file. 
 
 
-
+#### Legal
+MathBERT is MIT-licensed, refer to the LICENSE file in the top level directory.
