@@ -42,4 +42,4 @@ The pretraining code is located at /mathbert/ and fine-tuning notebook is at /sc
 
 
 #### Legal
-MathBERT is MIT-licensed, refer to the LICENSE file in the top level directory.
+MathBERT is MIT-licensed, refer to the [LICENSE](https://github.com/tbs17/MathBERT/blob/main/LICENCE) file in the top level directory.
